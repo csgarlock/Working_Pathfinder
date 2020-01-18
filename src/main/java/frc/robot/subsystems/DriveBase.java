@@ -79,7 +79,11 @@ public class DriveBase extends SubsystemBase {
   public void TankDriveVolts(double leftVolts, double rightVolts) {
     double left = (leftVolts / 22) + 6;
     double right = (rightVolts / 22) + 6;
-    differDrive.tankDrive(left, right, false);
+    //differDrive.tankDrive(left, right, false);
+    drivesRightMaster.setVoltage(rightVolts);  // sure
+    //drivesRightFollower.setVoltage(rightVolts);
+    drivesLeftMaster.setVoltage(leftVolts);
+    //drivesLeftFollower.setVoltage(leftVolts);
   }
 
   public Pose2d getPose() {

@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -35,10 +36,21 @@ public class RamseteTest extends CommandBase {
   public RamseteTest(DriveBase subsystem) {
     driveBase = subsystem;
     addRequirements(driveBase);
-    Pathfinder path = new Pathfinder(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(2, 0)),
-        new Pose2d(4, 0, new Rotation2d(0)));
+    // Pathfinder path = new Pathfinder(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(2, 0)),
+    //     new Pose2d(4, 0, new Rotation2d(0)));
+    Translation2d[] t2dEmpty = {};
+    Pathfinder path = new Pathfinder(
+      new Pose2d(0, 0, new Rotation2d(0)),  // initial pose (or what it should be)
+      Arrays.asList(t2dEmpty),  // list of translations for 'local waypoints', probably breaks?
+      new Pose2d(1, 0, new Rotation2d(Math.toRadians(0)))  // end pose; should be forward 0.5m
+    );
 
     trajectory = path.generateTrajectory();
+    Pose2d initialPose = trajectory.getInitialPose();
+    System.out.println("TOTAL TIME SECONDS OF THE TRAJECTORY: " + trajectory.getTotalTimeSeconds());
+    System.out.println("INIT POSE: " + initialPose);
+    System.out.println("POSE @ 0.5 SEC: " + trajectory.sample(0.5));
+    System.out.println("TOTAL TRAJ: " + trajectory);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
