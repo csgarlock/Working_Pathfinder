@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -44,7 +45,7 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() {
 
     gyro = new ADXRS450_Gyro();
- 
+
     drivesRightMaster = new WPI_TalonSRX(4);
     drivesRightFollower = new WPI_TalonSRX(5);
     drivesRightFollower.follow(drivesRightMaster);
@@ -65,7 +66,6 @@ public class DriveBase extends SubsystemBase {
     odometry = new DifferentialDriveOdometry(getGyroHeading(), pose);
     kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(18.665));
 
-
   }
 
   @Override
@@ -73,21 +73,23 @@ public class DriveBase extends SubsystemBase {
 
     differDrive.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
     pose = getPose();
+    // System.out.println("Right: " + toMeters(drivesRightMaster.getSelectedSensorPosition()) + " Left: " + toMeters(drivesLeftMaster.getSelectedSensorPosition()));
+    System.out.println(kinematics.toChassisSpeeds(getWheelSpeeds()).toString());
 
   }
 
   public void TankDriveVolts(double leftVolts, double rightVolts) {
     double left = (leftVolts / 22) + 6;
     double right = (rightVolts / 22) + 6;
-    //differDrive.tankDrive(left, right, false);
-    drivesRightMaster.setVoltage(rightVolts);  // sure
-    //drivesRightFollower.setVoltage(rightVolts);
-    drivesLeftMaster.setVoltage(leftVolts);
-    //drivesLeftFollower.setVoltage(leftVolts);
+    // differDrive.tankDrive(left, right, false);
+    drivesRightMaster.setVoltage(rightVolts); // sure
+    // drivesRightFollower.setVoltage(rightVolts);
+    drivesLeftMaster.setVoltage(-leftVolts);
+    // drivesLeftFollower.setVoltage(leftVolts);
   }
 
   public Pose2d getPose() {
-    return odometry.update(Rotation2d.fromDegrees(-gyro.getAngle()),
+    return odometry.update(getGyroHeading(),
         toMeters(-drivesLeftMaster.getSelectedSensorPosition()),
         toMeters(drivesRightMaster.getSelectedSensorPosition()));
   }
@@ -97,7 +99,7 @@ public class DriveBase extends SubsystemBase {
   }
 
   public Rotation2d getGyroHeading() {
-    return Rotation2d.fromDegrees(gyro.getAngle());
+    return Rotation2d.fromDegrees(-gyro.getAngle());
   }
 
   public double toMeters(double ticks) {
@@ -106,5 +108,12 @@ public class DriveBase extends SubsystemBase {
 
   public double toMetersPerSec(WPI_TalonSRX talon) {
     return Units.feetToMeters(((talon.getSelectedSensorVelocity() * 10) / 4068.0) * Conversion);
+  }
+
+  public void resetPose() {
+    drivesRightMaster.setSelectedSensorPosition(0);
+    drivesLeftMaster.setSelectedSensorPosition(0);
+    gyro.reset();
+    pose = getPose();
   }
 }
