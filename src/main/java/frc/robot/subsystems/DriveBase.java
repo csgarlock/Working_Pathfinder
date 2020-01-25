@@ -74,7 +74,8 @@ public class DriveBase extends SubsystemBase {
     differDrive.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
     pose = getPose();
     // System.out.println("Right: " + toMeters(drivesRightMaster.getSelectedSensorPosition()) + " Left: " + toMeters(drivesLeftMaster.getSelectedSensorPosition()));
-    System.out.println(kinematics.toChassisSpeeds(getWheelSpeeds()).toString());
+    //System.out.println(kinematics.toChassisSpeeds(getWheelSpeeds()).toString());
+    System.out.println(getPose().toString());
 
   }
 
