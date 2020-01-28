@@ -42,6 +42,9 @@ public class DriveBase extends SubsystemBase {
 
   public Pose2d pose;
 
+  public double lastVel = 0;
+  public double currentVel = 0;
+
   public DriveBase() {
 
     gyro = new ADXRS450_Gyro();
@@ -50,9 +53,15 @@ public class DriveBase extends SubsystemBase {
     drivesRightFollower = new WPI_TalonSRX(5);
     drivesRightFollower.follow(drivesRightMaster);
 
+    drivesRightMaster.configFactoryDefault();
+    drivesRightFollower.configFactoryDefault();
+
     drivesLeftMaster = new WPI_TalonSRX(1);
     drivesLeftFollower = new WPI_TalonSRX(2);
     drivesLeftFollower.follow(drivesLeftMaster);
+
+    drivesLeftMaster.configFactoryDefault();
+    drivesLeftFollower.configFactoryDefault();
 
     drivesRightMaster.setSelectedSensorPosition(0);
     drivesLeftMaster.setSelectedSensorPosition(0);
@@ -73,15 +82,12 @@ public class DriveBase extends SubsystemBase {
 
     differDrive.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
     pose = getPose();
-    // System.out.println("Right: " + toMeters(drivesRightMaster.getSelectedSensorPosition()) + " Left: " + toMeters(drivesLeftMaster.getSelectedSensorPosition()));
-    //System.out.println(kinematics.toChassisSpeeds(getWheelSpeeds()).toString());
-    System.out.println(getPose().toString());
+    //System.out.println(pose.toString());
+
 
   }
 
   public void TankDriveVolts(double leftVolts, double rightVolts) {
-    double left = (leftVolts / 22) + 6;
-    double right = (rightVolts / 22) + 6;
     // differDrive.tankDrive(left, right, false);
     drivesRightMaster.setVoltage(rightVolts); // sure
     // drivesRightFollower.setVoltage(rightVolts);
@@ -107,6 +113,10 @@ public class DriveBase extends SubsystemBase {
     return Units.feetToMeters((ticks / 4068.0) * Conversion);
   }
 
+  public double toInches(double ticks) {
+    return ((ticks / 4068.0) * Conversion) * 12;
+  }
+
   public double toMetersPerSec(WPI_TalonSRX talon) {
     return Units.feetToMeters(((talon.getSelectedSensorVelocity() * 10) / 4068.0) * Conversion);
   }
@@ -116,5 +126,10 @@ public class DriveBase extends SubsystemBase {
     drivesLeftMaster.setSelectedSensorPosition(0);
     gyro.reset();
     pose = getPose();
+    printLeftRight();
+  }
+
+  public void printLeftRight() {
+    System.out.println("Right: " + toInches(drivesRightMaster.getSelectedSensorPosition()) + " Left: " + toInches(drivesLeftMaster.getSelectedSensorPosition()));
   }
 }
