@@ -24,9 +24,7 @@ public class Constants
     public static final DifferentialDriveKinematics driveKinematics =
         new DifferentialDriveKinematics(trackWidthMeters);
 
-    //public static final double maxSpeedMetersPerSecond = 2.00;
     public static final double maxSpeedMetersPerSecond = 2.96;  // DEBUG
-    //public static final double maxAccelerationMetersPerSecondSquared = 1.00;
     public static final double maxAccelerationMetersPerSecondSquared = 1.2;  // DEBUG
 
     public static final double ramseteB = 2.00;
