@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -42,7 +43,7 @@ public class RamseteTest extends CommandBase {
     Pathfinder path = new Pathfinder(
       new Pose2d(0, 0, new Rotation2d(0)),  // initial pose (or what it should be)
       Arrays.asList(t2dEmpty),  // list of translations for 'local waypoints', probably breaks?
-      new Pose2d(2, 1, new Rotation2d(Math.toRadians(0)))  // end pose; should be forward 0.5m
+      new Pose2d(3, 1, new Rotation2d(Math.toRadians(0)))  // end pose; should be forward 0.5m
     );
 
     trajectory = path.generateTrajectory();

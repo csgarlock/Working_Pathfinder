@@ -38,7 +38,7 @@ public class DriveBase extends SubsystemBase {
   public DifferentialDriveOdometry odometry;
   public DifferentialDriveKinematics kinematics;
 
-  private static final double feetPerWheelRevolution = 12.0 / (Math.PI * 4);
+  private static final double feetPerWheelRevolution = 12.0 / (Math.PI * 3.92);
   private static final int kEncoderTicksPerRevolution = 4096;
 
   public DriveBase() {
@@ -68,7 +68,7 @@ public class DriveBase extends SubsystemBase {
   public void periodic() {
     differDrive.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
     pose = getPose();
-    System.out.println(getPose().toString());
+    //System.out.println(getPose().toString());
 
   }
 

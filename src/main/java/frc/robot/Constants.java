@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -14,18 +15,20 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  */
 public class Constants
 {
-    public static final double sVolts = 0.459;
-    public static final double vVoltsSecondsPerMeter = 1.09;
-    public static final double aVoltsSecondsSquaredPerMeter = 0.0734;
+    public static final double sVolts = 0.686; //0.459
+    public static final double vVoltsSecondsPerMeter = 3.6; //1.09
+    public static final double aVoltsSecondsSquaredPerMeter = 0.379; //0.0734
 
-    public static final double pDriveVel = 3.11;
-    public static final double trackWidthMeters = 0.474091;
+    public static final double pDriveVel = 0.0101; //3.11
+    public static final double trackWidthMeters = 0.8054615; //0.474091
 
     public static final DifferentialDriveKinematics driveKinematics =
         new DifferentialDriveKinematics(trackWidthMeters);
 
-    public static final double maxSpeedMetersPerSecond = 2.96;  // DEBUG
-    public static final double maxAccelerationMetersPerSecondSquared = 1.2;  // DEBUG
+    //public static final double maxSpeedMetersPerSecond = 2.00;
+    public static final double maxSpeedMetersPerSecond = 1;  // DEBUG
+    //public static final double maxAccelerationMetersPerSecondSquared = 1.00;
+    public static final double maxAccelerationMetersPerSecondSquared = 0.5;  // DEBUG
 
     public static final double ramseteB = 2.00;
     public static final double ramseteZeta = 0.70;
