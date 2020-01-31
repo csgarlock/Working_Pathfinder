@@ -43,7 +43,7 @@ public class RamseteTest extends CommandBase {
     Pathfinder path = new Pathfinder(
       new Pose2d(0, 0, new Rotation2d(0)),  // initial pose (or what it should be)
       Arrays.asList(t2dEmpty),  // list of translations for 'local waypoints', probably breaks?
-      new Pose2d(Units.feetToMeters(8), 0, new Rotation2d(Math.toRadians(0)))  // end pose; should be forward 0.5m
+      new Pose2d(6, 3, new Rotation2d(Math.toRadians(90)))  // end pose; should be forward 0.5m
     );
 
     trajectory = path.generateTrajectory();
@@ -54,7 +54,7 @@ public class RamseteTest extends CommandBase {
   @Override
   public void initialize() {
 
-    driveBase.resetPose();
+    //driveBase.resetPose();
     System.out.println("TESTING TESTING 123");
     this.ramseteCommand = new RamseteCommand(
         trajectory,

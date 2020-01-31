@@ -78,7 +78,7 @@ public class DriveBase extends SubsystemBase {
   public void periodic() {
     differDrive.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
     pose = getPose();
-    //System.out.println(getPose().toString());
+    System.out.println(getPose().toString());
 
   }
 
@@ -112,10 +112,12 @@ public class DriveBase extends SubsystemBase {
   }
 
   public void resetPose() {
+    /*
     drivesRightMaster.setSelectedSensorPosition(0);
     drivesLeftMaster.setSelectedSensorPosition(0);
     gyro.reset();
     pigeon.setYaw(0);
     pose = getPose();
+    */
   }
 }

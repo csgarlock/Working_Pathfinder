@@ -28,7 +28,7 @@ public class Constants
     //public static final double maxSpeedMetersPerSecond = 2.00;
     public static final double maxSpeedMetersPerSecond = 1;  // DEBUG
     //public static final double maxAccelerationMetersPerSecondSquared = 1.00;
-    public static final double maxAccelerationMetersPerSecondSquared = 0.5;  // DEBUG
+    public static final double maxAccelerationMetersPerSecondSquared = 1;  // DEBUG
 
     public static final double ramseteB = 2.00;
     public static final double ramseteZeta = 0.70;
