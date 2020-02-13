@@ -7,8 +7,8 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -32,8 +32,8 @@ public class DriveBase extends SubsystemBase {
   public Gyro gyro;
   public XboxController joystick;
 
-  public WPI_TalonSRX drivesRightMaster, drivesRightFollower;
-  public WPI_TalonSRX drivesLeftMaster, drivesLeftFollower;
+  public WPI_TalonFX drivesRightMaster, drivesRightFollower;
+  public WPI_TalonFX drivesLeftMaster, drivesLeftFollower;
 
   public DifferentialDrive differDrive;
 
@@ -44,7 +44,7 @@ public class DriveBase extends SubsystemBase {
   public PigeonIMU pigeon;
 
   private static final double feetPerWheelRevolution = 12.0 / (Math.PI * 3.92);
-  private static final int kEncoderTicksPerRevolution = 4096;
+  private static final int kEncoderTicksPerRevolution = 2048;
 
   public DriveBase() {
 
@@ -54,14 +54,14 @@ public class DriveBase extends SubsystemBase {
     pigeon = new PigeonIMU(33);
     pigeon.setYaw(0);
 
-    drivesRightMaster = new WPI_TalonSRX(4);
-    drivesRightFollower = new WPI_TalonSRX(5);
+    drivesRightMaster = new WPI_TalonFX(2);
+    drivesRightFollower = new WPI_TalonFX(11);
     drivesRightFollower.follow(drivesRightMaster);
     drivesRightMaster.setSelectedSensorPosition(0);
     drivesRightMaster.setNeutralMode(NeutralMode.Brake);
 
-    drivesLeftMaster = new WPI_TalonSRX(1);
-    drivesLeftFollower = new WPI_TalonSRX(2);
+    drivesLeftMaster = new WPI_TalonFX(4);
+    drivesLeftFollower = new WPI_TalonFX(12);
     drivesLeftFollower.follow(drivesLeftMaster);
     drivesLeftMaster.setSelectedSensorPosition(0);
     drivesLeftMaster.setNeutralMode(NeutralMode.Brake);
@@ -104,11 +104,11 @@ public class DriveBase extends SubsystemBase {
   }
 
   public double toMeters(double ticks) {
-    return Units.feetToMeters((ticks / kEncoderTicksPerRevolution) * feetPerWheelRevolution);
+    return Units.feetToMeters(((ticks / kEncoderTicksPerRevolution) * feetPerWheelRevolution) / 7.92);
   }
 
-  public double toMetersPerSec(WPI_TalonSRX talon) {
-    return Units.feetToMeters(((talon.getSelectedSensorVelocity() * 10) / kEncoderTicksPerRevolution) * feetPerWheelRevolution);
+  public double toMetersPerSec(WPI_TalonFX talon) {
+    return Units.feetToMeters((((talon.getSelectedSensorVelocity() * 10) / kEncoderTicksPerRevolution) * feetPerWheelRevolution) / 7.92);
   }
 
   public void resetPose() {

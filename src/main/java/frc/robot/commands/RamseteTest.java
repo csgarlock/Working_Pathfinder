@@ -7,9 +7,12 @@
 
 package frc.robot.commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -17,6 +20,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -31,22 +35,35 @@ public class RamseteTest extends CommandBase {
   private Trajectory trajectory;
 
   public RamseteCommand ramseteCommand;
+
   /**
    * Creates a new RamseteTest.
    */
   public RamseteTest(DriveBase subsystem) {
     driveBase = subsystem;
     addRequirements(driveBase);
-    // Pathfinder path = new Pathfinder(new Pose2d(0, 0, new Rotation2d(0)), List.of(new Translation2d(2, 0)),
-    //     new Pose2d(4, 0, new Rotation2d(0)));
-    Translation2d[] t2dEmpty = {};
-    Pathfinder path = new Pathfinder(
-      new Pose2d(0, 0, new Rotation2d(0)),  // initial pose (or what it should be)
-      Arrays.asList(t2dEmpty),  // list of translations for 'local waypoints', probably breaks?
-      new Pose2d(6, 3, new Rotation2d(Math.toRadians(90)))  // end pose; should be forward 0.5m
-    );
+    // Pathfinder path = new Pathfinder(new Pose2d(0, 0, new Rotation2d(0)),
+    // List.of(new Translation2d(2, 0)),
+    // new Pose2d(4, 0, new Rotation2d(0)));
+    /*
+     * Translation2d[] t2dEmpty = {}; Pathfinder path = new Pathfinder( new
+     * Pose2d(0, 0, new Rotation2d(0)), // initial pose (or what it should be)
+     * Arrays.asList(t2dEmpty), // list of translations for 'local waypoints',
+     * probably breaks? new Pose2d(3, -1.5, new Rotation2d(Math.toRadians(-90))) //
+     * end pose; should be forward 0.5m );
+     */
 
-    trajectory = path.generateTrajectory();
+    // trajectory = path.generateTrajectory();
+    Path traPath = Filesystem.getDeployDirectory().toPath()
+        .resolve("Unnamed.wpilib.json");
+    try {
+      trajectory = TrajectoryUtil.fromPathweaverJson(traPath);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    System.out.println("Path Made");
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
